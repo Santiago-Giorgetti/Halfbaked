@@ -63,7 +63,7 @@ export default async function TicketDetailPage({ params }: Props) {
 
       <article className="card space-y-3">
         <h2 className="text-base font-medium text-slate-100">Historial de estados</h2>
-        {ticket.statusHistory.map((entry: { from: string | null; to: string; date: string }, index: number) => (
+        {ticket.statusHistory.map((entry: { from: string | null; to: string; date: Date }, index: number) => (
           <p key={`${entry.to}-${index}`} className="text-sm text-slate-300">
             {entry.from ?? "INIT"} → {entry.to} ({new Date(entry.date).toLocaleString("es-ES")})
           </p>
@@ -73,7 +73,7 @@ export default async function TicketDetailPage({ params }: Props) {
       <article className="card space-y-3">
         <h2 className="text-base font-medium text-slate-100">Branches</h2>
         {ticket.branches.length === 0 && <p className="text-sm text-slate-300">Sin branches registradas.</p>}
-        {ticket.branches.map((branch: { name: string; createdAt: string }) => (
+        {ticket.branches.map((branch: { name: string; createdAt: Date }) => (
           <p key={`${branch.name}-${branch.createdAt}`} className="text-sm text-slate-300">
             {branch.name} - {new Date(branch.createdAt).toLocaleString("es-ES")}
           </p>

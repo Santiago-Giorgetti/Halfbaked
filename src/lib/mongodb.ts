@@ -6,6 +6,8 @@ if (!MONGODB_URI) {
   throw new Error("Define MONGODB_URI en tus variables de entorno.");
 }
 
+const mongoUri = MONGODB_URI;
+
 declare global {
   // eslint-disable-next-line no-var
   var mongooseCache: {
@@ -22,7 +24,7 @@ export async function connectToDatabase() {
   if (cache.conn) return cache.conn;
 
   if (!cache.promise) {
-    cache.promise = mongoose.connect(MONGODB_URI);
+    cache.promise = mongoose.connect(mongoUri);
   }
 
   cache.conn = await cache.promise;
