@@ -24,13 +24,13 @@ export function TicketCard({ ticket }: Props) {
       <p className="text-sm leading-relaxed text-slate-300">{ticket.description || "Sin descripcion"}</p>
 
       <div className="flex flex-wrap gap-2">
-        {ticket.labels.map((label) => (
+        {(ticket.labels ?? []).map((label) => (
           <LabelBadge key={label} value={label} />
         ))}
       </div>
 
       <div className="flex items-center justify-between border-t border-slate-800 pt-3 text-sm text-slate-400">
-        <span>Checklist {progressFraction(ticket.checklist)}</span>
+        <span>Checklist {progressFraction(ticket.checklist ?? [])}</span>
         {inconsistent && <span className="badge border-rose-800 bg-rose-900/30 text-rose-200">Inconsistente</span>}
       </div>
     </article>

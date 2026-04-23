@@ -9,8 +9,15 @@ import type { Ticket } from "@/types/ticket";
 
 async function getTickets(ownerEmail: string): Promise<Ticket[]> {
   await connectToDatabase();
-  const tickets = await TicketModel.find({ ownerEmail }).sort({ updatedAt: -1 }).lean();
-  return JSON.parse(JSON.stringify(tickets));
+  const raw = await TicketModel.find({ ownerEmail }).sort({ updatedAt: -1 }).lean();
+  const tickets = JSON.parse(JSON.stringify(raw)) as Ticket[];
+  return tickets.map((t) => ({
+    ...t,
+    labels: t.labels ?? [],
+    checklist: t.checklist ?? [],
+    branches: t.branches ?? [],
+    statusHistory: t.statusHistory ?? []
+  }));
 }
 
 export default async function HomePage() {
@@ -30,7 +37,32 @@ export default async function HomePage() {
     );
   }
 
-  const tickets = await getTickets(ownerEmail);
+  let tickets: Ticket[] = [];
+  let dbError: string | null = null;
+  try {
+    tickets = await getTickets(ownerEmail);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Error desconocido";
+    dbError =
+      message.includes("MONGODB_URI") || message.includes("ECONNREFUSED") || message.includes("ENOTFOUND")
+        ? "No se pudo conectar a la base de datos. Revisa MONGODB_URI en Vercel y en MongoDB Atlas: Network Access debe permitir 0.0.0.0/0 (o IPs de Vercel) para entornos serverless."
+        : `No se pudieron cargar los tickets: ${message}`;
+  }
+
+  if (dbError) {
+    return (
+      <section className="space-y-6">
+        <header className="surface space-y-4 p-6">
+          <p className="muted uppercase tracking-[0.2em]">Workspace</p>
+          <h1 className="heading-xl">Gestor de tickets</h1>
+          <p className="text-sm text-rose-300">{dbError}</p>
+          <div className="flex flex-wrap gap-3">
+            <AuthButtons />
+          </div>
+        </header>
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-6">
