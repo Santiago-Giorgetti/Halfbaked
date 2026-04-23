@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply min-h-screen text-slate-100 antialiased;
+  background-color: #04112a;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(241, 184, 26, 0.12), transparent 34%),
+    linear-gradient(to bottom, rgba(2, 6, 23, 0.82), rgba(2, 6, 23, 0.92)),
+    url("/boca-juniors-logo.png");
+  background-size: auto, auto, 620px;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, right -60px bottom -80px;
+  background-attachment: fixed;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-800/80 bg-slate-900/65 p-5 shadow-sm shadow-black/20 backdrop-blur;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full border border-slate-700 px-2.5 py-1 text-xs font-medium;
+}
+
+.heading-xl {
+  @apply text-3xl font-semibold tracking-tight text-slate-50 md:text-4xl;
+}
+
+.muted {
+  @apply text-sm text-slate-400;
+}
+
+.surface {
+  @apply rounded-2xl border border-slate-800/80 bg-slate-900/55 shadow-sm shadow-black/20 backdrop-blur;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-primary {
+  @apply bg-slate-100 text-slate-900 hover:bg-white;
+}
+
+.btn-secondary {
+  @apply border border-slate-700 bg-slate-900/60 text-slate-200 hover:border-slate-500 hover:text-white;
+}
+
+.field {
+  @apply w-full rounded-xl border border-slate-700/90 bg-slate-900 px-3 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-slate-500 focus:ring-2 focus:ring-slate-500/30;
+}

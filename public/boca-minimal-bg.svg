@@ -1,0 +1,28 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#071631"/>
+  <rect x="-120" y="190" width="2160" height="170" fill="#0C2A57" fill-opacity="0.85"/>
+  <rect x="-120" y="380" width="2160" height="145" fill="#F1B81A" fill-opacity="0.92"/>
+  <rect x="-120" y="540" width="2160" height="170" fill="#0C2A57" fill-opacity="0.85"/>
+  <g opacity="0.26">
+    <circle cx="290" cy="180" r="2.8" fill="#F4C542"/>
+    <circle cx="510" cy="128" r="2.1" fill="#F4C542"/>
+    <circle cx="745" cy="220" r="2.4" fill="#F4C542"/>
+    <circle cx="980" cy="150" r="2.6" fill="#F4C542"/>
+    <circle cx="1260" cy="210" r="2.2" fill="#F4C542"/>
+    <circle cx="1490" cy="132" r="2.9" fill="#F4C542"/>
+    <circle cx="1685" cy="210" r="2.3" fill="#F4C542"/>
+    <circle cx="340" cy="880" r="2.5" fill="#F4C542"/>
+    <circle cx="615" cy="930" r="2.3" fill="#F4C542"/>
+    <circle cx="920" cy="860" r="2.9" fill="#F4C542"/>
+    <circle cx="1160" cy="930" r="2.1" fill="#F4C542"/>
+    <circle cx="1410" cy="870" r="2.6" fill="#F4C542"/>
+    <circle cx="1680" cy="940" r="2.4" fill="#F4C542"/>
+  </g>
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+  <defs>
+    <radialGradient id="vignette" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(960 540) rotate(90) scale(620 980)">
+      <stop stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+</svg>
