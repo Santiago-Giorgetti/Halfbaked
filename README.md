@@ -1,4 +1,4 @@
-# Gestor de Tickets
+# Documentación [Gestor de Tickets]
 
 Aplicación web para seguimiento de tickets técnicos con autenticación Google, arquitectura full-stack en Next.js y persistencia en MongoDB Atlas.
 
