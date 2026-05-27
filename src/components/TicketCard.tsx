@@ -7,18 +7,40 @@ import type { Ticket } from "@/types/ticket";
 
 type Props = {
   ticket: Ticket;
+  draggable?: boolean;
+  onDelete?: () => void;
 };
 
-export function TicketCard({ ticket }: Props) {
-  const inconsistent = isInconsistent(ticket.mainStatus, ticket.checklist);
+export function TicketCard({ ticket, draggable = false, onDelete }: Props) {
+  const inconsistent = isInconsistent(ticket.mainStatus, ticket.checklist ?? []);
 
   return (
-    <article className="card space-y-4">
+    <article className={`card space-y-4 ${draggable ? "cursor-grab active:cursor-grabbing" : ""}`}>
       <div className="flex items-center justify-between gap-3">
-        <Link href={`/tickets/${ticket._id}`} className="text-lg font-medium tracking-tight text-slate-100 hover:text-white">
+        <Link
+          href={`/tickets/${ticket._id}`}
+          className="text-lg font-medium tracking-tight text-slate-100 hover:text-white"
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
           {ticket.title}
         </Link>
-        <span className="badge bg-slate-800 text-slate-200">{ticket.mainStatus}</span>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="badge bg-slate-800 text-slate-200">{ticket.mainStatus}</span>
+          {onDelete && (
+            <button
+              type="button"
+              className="text-xs text-rose-300 hover:text-rose-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              Eliminar
+            </button>
+          )}
+        </div>
       </div>
 
       <p className="text-sm leading-relaxed text-slate-300">{ticket.description || "Sin descripcion"}</p>

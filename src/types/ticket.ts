@@ -31,12 +31,22 @@ export type Ticket = {
   title: string;
   description: string;
   mainStatus: MainStatus;
+  sortOrder: number;
   labels: TicketLabel[];
   checklist: ChecklistItem[];
   branches: BranchItem[];
   statusHistory: StatusHistoryItem[];
   createdAt: Date;
   updatedAt: Date;
+};
+
+export const MAIN_STATUS_LABELS: Record<MainStatus, string> = {
+  TODO: "Por hacer",
+  IN_PROGRESS: "En progreso",
+  BLOCKED: "Bloqueado",
+  DONE: "Hecho",
+  QA: "QA",
+  PROD: "Produccion"
 };
 
 export type TicketInput = Omit<Ticket, "_id" | "createdAt" | "updatedAt" | "statusHistory"> & {

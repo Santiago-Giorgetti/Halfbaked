@@ -35,6 +35,7 @@ const ticketSchema = new Schema<TicketDocument>(
     title: { type: String, required: true, trim: true },
     description: { type: String, default: "", trim: true },
     mainStatus: { type: String, enum: MAIN_STATUS, default: "TODO" },
+    sortOrder: { type: Number, default: () => Date.now() },
     labels: [{ type: String, trim: true }],
     checklist: [checklistSchema],
     branches: [branchSchema],

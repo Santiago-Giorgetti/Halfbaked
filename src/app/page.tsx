@@ -2,17 +2,18 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { AuthButtons } from "@/components/AuthButtons";
 import { authOptions } from "@/lib/auth";
-import { TicketCard } from "@/components/TicketCard";
+import { TicketBoard } from "@/components/TicketBoard";
 import { connectToDatabase } from "@/lib/mongodb";
 import { TicketModel } from "@/models/Ticket";
 import type { Ticket } from "@/types/ticket";
 
 async function getTickets(ownerEmail: string): Promise<Ticket[]> {
   await connectToDatabase();
-  const raw = await TicketModel.find({ ownerEmail }).sort({ updatedAt: -1 }).lean();
+  const raw = await TicketModel.find({ ownerEmail }).sort({ sortOrder: 1, updatedAt: -1 }).lean();
   const tickets = JSON.parse(JSON.stringify(raw)) as Ticket[];
   return tickets.map((t) => ({
     ...t,
+    sortOrder: t.sortOrder ?? new Date(t.updatedAt).getTime(),
     labels: t.labels ?? [],
     checklist: t.checklist ?? [],
     branches: t.branches ?? [],
@@ -70,7 +71,7 @@ export default async function HomePage() {
         <div className="space-y-1">
           <p className="muted uppercase tracking-[0.2em]">Workspace</p>
           <h1 className="heading-xl">Gestor de tickets</h1>
-          <p className="muted">Seguimiento claro de tareas, estados y avance tecnico.</p>
+          <p className="muted">Seguimiento claro de tareas, estados y avance tecnico. Arrastra para reordenar.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Link href="/tickets/new" className="btn btn-primary">
@@ -80,16 +81,13 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {tickets.map((ticket) => (
-          <TicketCard key={ticket._id} ticket={ticket} />
-        ))}
-        {tickets.length === 0 && (
-          <div className="surface p-10 text-center">
-            <p className="text-sm text-slate-300">No hay tickets todavia. Crea el primero para empezar.</p>
-          </div>
-        )}
-      </div>
+      {tickets.length === 0 ? (
+        <div className="surface p-10 text-center">
+          <p className="text-sm text-slate-300">No hay tickets todavia. Crea el primero para empezar.</p>
+        </div>
+      ) : (
+        <TicketBoard tickets={tickets} />
+      )}
     </section>
   );
 }

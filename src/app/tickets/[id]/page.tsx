@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { authOptions } from "@/lib/auth";
+import { TicketDetailActions } from "@/components/TicketDetailActions";
 import { LabelBadge } from "@/components/LabelBadge";
 import { isInconsistent, progress, progressFraction } from "@/lib/ticket-logic";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -28,9 +29,7 @@ export default async function TicketDetailPage({ params }: Props) {
         <Link href="/" className="muted hover:text-slate-200">
           Volver al listado
         </Link>
-        <Link href={`/tickets/${params.id}/edit`} className="btn btn-secondary">
-          Editar
-        </Link>
+        <TicketDetailActions ticketId={params.id} ticketTitle={ticket.title} />
       </div>
 
       <article className="card space-y-4">
