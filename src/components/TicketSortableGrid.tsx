@@ -33,10 +33,10 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
   }, [initialTickets]);
 
   useLayoutEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-
     function syncCardHeights() {
+      const grid = gridRef.current;
+      if (!grid) return;
+
       const cells = Array.from(grid.querySelectorAll<HTMLElement>("[data-ticket-cell]"));
       if (!cells.length) return;
 
