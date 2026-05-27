@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TicketCard } from "@/components/TicketCard";
 import { DeleteTicketModal } from "@/components/DeleteTicketModal";
@@ -21,6 +21,7 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dropTargetId, setDropTargetId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const orderedTickets = useMemo(
     () => [...tickets].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
@@ -30,6 +31,29 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
   useEffect(() => {
     setTickets(initialTickets);
   }, [initialTickets]);
+
+  useLayoutEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    function syncCardHeights() {
+      const cells = Array.from(grid.querySelectorAll<HTMLElement>("[data-ticket-cell]"));
+      if (!cells.length) return;
+
+      cells.forEach((cell) => {
+        cell.style.minHeight = "";
+      });
+
+      const maxHeight = Math.max(...cells.map((cell) => cell.offsetHeight));
+      cells.forEach((cell) => {
+        cell.style.minHeight = `${maxHeight}px`;
+      });
+    }
+
+    syncCardHeights();
+    window.addEventListener("resize", syncCardHeights);
+    return () => window.removeEventListener("resize", syncCardHeights);
+  }, [orderedTickets]);
 
   async function updateSortOrder(ticketId: string, sortOrder: number) {
     const previous = tickets;
@@ -77,10 +101,11 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div ref={gridRef} className="grid items-stretch gap-4 md:grid-cols-2">
         {orderedTickets.map((ticket) => (
           <div
             key={ticket._id}
+            data-ticket-cell
             draggable
             onDragStart={() => setDraggingId(ticket._id)}
             onDragEnd={() => {
@@ -98,7 +123,7 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
               e.preventDefault();
               handleDrop(ticket._id);
             }}
-            className={`transition ${
+            className={`flex h-full min-h-0 transition ${
               draggingId === ticket._id
                 ? "opacity-50"
                 : dropTargetId === ticket._id
@@ -107,6 +132,7 @@ export function TicketSortableGrid({ tickets: initialTickets }: Props) {
             }`}
           >
             <TicketCard
+              className="flex-1"
               ticket={ticket}
               draggable
               onDelete={() => setDeleteTarget({ id: ticket._id, title: ticket.title })}
