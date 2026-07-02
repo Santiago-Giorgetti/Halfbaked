@@ -94,7 +94,7 @@ export function TicketForm({ mode, initialData }: Props) {
           <input
             type="number"
             min={1}
-            className="field pl-7"
+            className="field !pl-7"
             placeholder="ej: 1234"
             value={form.ticketID}
             onChange={(e) =>
