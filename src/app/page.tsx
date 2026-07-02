@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { AuthButtons } from "@/components/AuthButtons";
 import { authOptions } from "@/lib/auth";
-import { TicketBoard } from "@/components/TicketBoard";
+import { TicketPageContent } from "@/components/TicketPageContent";
 import { connectToDatabase } from "@/lib/mongodb";
 import { TicketModel } from "@/models/Ticket";
 import type { Ticket } from "@/types/ticket";
@@ -65,29 +64,5 @@ export default async function HomePage() {
     );
   }
 
-  return (
-    <section className="space-y-6">
-      <header className="surface flex flex-col gap-5 p-6 md:flex-row md:items-end md:justify-between">
-        <div className="space-y-1">
-          <p className="muted uppercase tracking-[0.2em]">Workspace</p>
-          <h1 className="heading-xl">Gestor de tickets</h1>
-          <p className="muted">Seguimiento claro de tareas, estados y avance tecnico. Arrastra para reordenar.</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Link href="/tickets/new" className="btn btn-primary">
-            Nuevo ticket
-          </Link>
-          <AuthButtons />
-        </div>
-      </header>
-
-      {tickets.length === 0 ? (
-        <div className="surface p-10 text-center">
-          <p className="text-sm text-slate-300">No hay tickets todavia. Crea el primero para empezar.</p>
-        </div>
-      ) : (
-        <TicketBoard tickets={tickets} />
-      )}
-    </section>
-  );
+  return <TicketPageContent tickets={tickets} authSlot={<AuthButtons />} />;
 }

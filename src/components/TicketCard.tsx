@@ -20,14 +20,19 @@ export function TicketCard({ ticket, className = "", draggable = false, onDelete
       className={`card flex h-full min-h-0 flex-col gap-4 ${draggable ? "cursor-grab active:cursor-grabbing" : ""} ${className}`}
     >
       <div className="flex items-center justify-between gap-3">
-        <Link
-          href={`/tickets/${ticket._id}`}
-          className="text-lg font-medium tracking-tight text-slate-100 hover:text-white"
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          {ticket.title}
-        </Link>
+        <div className="min-w-0">
+          {ticket.ticketID != null && (
+            <p className="mb-0.5 font-mono text-xs text-slate-500">#{ticket.ticketID}</p>
+          )}
+          <Link
+            href={`/tickets/${ticket._id}`}
+            className="text-lg font-medium tracking-tight text-slate-100 hover:text-white"
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            {ticket.title}
+          </Link>
+        </div>
         <div className="flex shrink-0 items-center gap-2">
           <span className="badge bg-slate-800 text-slate-200">{ticket.mainStatus}</span>
           {onDelete && (

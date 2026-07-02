@@ -58,6 +58,12 @@ export async function PUT(request: Request, { params }: Params) {
     const statusChanged = nextStatus !== current.mainStatus;
 
     const updatePayload = {
+      ticketID:
+        typeof body.ticketID === "number" && Number.isInteger(body.ticketID)
+          ? body.ticketID
+          : body.ticketID === null
+          ? null
+          : current.ticketID ?? null,
       title: body.title ?? current.title,
       description: body.description ?? current.description,
       mainStatus: nextStatus,

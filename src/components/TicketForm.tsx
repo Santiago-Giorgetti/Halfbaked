@@ -24,6 +24,7 @@ export function TicketForm({ mode, initialData }: Props) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [branchInput, setBranchInput] = useState("");
   const [form, setForm] = useState({
+    ticketID: initialData?.ticketID ?? ("" as number | ""),
     title: initialData?.title ?? "",
     description: initialData?.description ?? "",
     mainStatus: (initialData?.mainStatus ?? "TODO") as MainStatus,
@@ -68,7 +69,10 @@ export function TicketForm({ mode, initialData }: Props) {
     const response = await fetch(endpoint, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
+      body: JSON.stringify({
+        ...form,
+        ticketID: form.ticketID === "" ? null : Number(form.ticketID)
+      })
     });
 
     setLoading(false);
@@ -83,6 +87,26 @@ export function TicketForm({ mode, initialData }: Props) {
 
   return (
     <form onSubmit={onSubmit} className="card space-y-5">
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Número de ticket</label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 select-none">#</span>
+          <input
+            type="number"
+            min={1}
+            className="field pl-7"
+            placeholder="ej: 1234"
+            value={form.ticketID}
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+                ticketID: e.target.value === "" ? "" : parseInt(e.target.value, 10)
+              }))
+            }
+          />
+        </div>
+      </div>
+
       <div className="space-y-1">
         <label className="text-sm text-slate-300">Titulo</label>
         <input

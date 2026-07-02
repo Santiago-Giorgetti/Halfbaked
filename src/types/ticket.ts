@@ -28,6 +28,7 @@ export type StatusHistoryItem = {
 export type Ticket = {
   _id: string;
   ownerEmail: string;
+  ticketID?: number;
   title: string;
   description: string;
   mainStatus: MainStatus;

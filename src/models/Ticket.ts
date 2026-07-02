@@ -32,6 +32,7 @@ const statusHistorySchema = new Schema(
 const ticketSchema = new Schema<TicketDocument>(
   {
     ownerEmail: { type: String, required: true, trim: true, index: true },
+    ticketID: { type: Number, default: null },
     title: { type: String, required: true, trim: true },
     description: { type: String, default: "", trim: true },
     mainStatus: { type: String, enum: MAIN_STATUS, default: "TODO" },

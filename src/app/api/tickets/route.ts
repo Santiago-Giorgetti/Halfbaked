@@ -48,6 +48,7 @@ export async function POST(request: Request) {
 
     const ticket = await TicketModel.create({
       ownerEmail,
+      ticketID: typeof body.ticketID === "number" && Number.isInteger(body.ticketID) ? body.ticketID : null,
       title: body.title,
       description: body.description ?? "",
       mainStatus,
